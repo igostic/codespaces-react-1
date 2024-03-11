@@ -24,9 +24,10 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Product Reviews</h2>
-      <ProductList products={products} selectedProductId={selectedProductId} onProductSelect={setSelectedProductId} />
-      <ReviewForm products={products} selectedProductId={selectedProductId} onSubmit={handleReviewSubmit} />
+        <div className={`${selectedProductId ? 'selected-box' : ''}`}>
+          <ProductList products={products} selectedProductId={selectedProductId} onProductSelect={setSelectedProductId} />
+          {selectedProductId && <ReviewForm products={products} selectedProductId={selectedProductId} onSubmit={handleReviewSubmit} setSelectedProductId={setSelectedProductId} />}
+      </div>
     </div>
   );
 }

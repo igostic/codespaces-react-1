@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RatingStars from './RatingStars'; // Import RatingStars component
 
-const ReviewForm = ({ products, selectedProductId, onSubmit }) => {
+const ReviewForm = ({ products, selectedProductId, onSubmit, setSelectedProductId }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
@@ -71,9 +71,9 @@ const ReviewForm = ({ products, selectedProductId, onSubmit }) => {
     setRating(0);
     setReviewText('');
     setErrors({});
+    setSelectedProductId(null);
+    setSelectedProductId(null);
 
-    // Simulate returning to product list (optional)
-    setSelectedProductId(null); // Consider logic based on your application flow
   };
 
   return (
@@ -82,14 +82,19 @@ const ReviewForm = ({ products, selectedProductId, onSubmit }) => {
       {currentStep === 1 && (
         <div>
           <h3>Select Rating</h3>
+          {errors.rating && <span className="error">{errors.rating}</span>}
           <RatingStars rating={rating} onRatingChange={handleRatingChange} errors={errors} />
         </div>
       )}
       {currentStep === 2 && (
         <div>
+          <RatingStars rating={rating} onRatingChange={handleRatingChange} errors={errors} />
           <h3>Write Review</h3>
           <textarea value={reviewText} onChange={handleReviewChange} rows={5} maxLength={100} />
           {errors.reviewText && <span className="error">{errors.reviewText}</span>}
+          <p className="character-count">
+            {reviewText.length} / {100}
+          </p>
         </div>
       )}
       {currentStep === 3 && (
@@ -100,10 +105,9 @@ const ReviewForm = ({ products, selectedProductId, onSubmit }) => {
         </div>
       )}
       <div className="form-actions">
-        {currentStep > 1 && <button onClick={handlePrevStep}>Previous</button>}
+        {currentStep > 1 && <button className="previous-button" onClick={handlePrevStep}>Previous</button>}
         {currentStep < 3 && <button onClick={handleNextStep}>Next</button>}
         {currentStep === 3 && <button onClick={handleSubmit}>Submit</button>}
-        {errors.rating && <span className="error">{errors.rating}</span>}
       </div>
     </div>
   );
