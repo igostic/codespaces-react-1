@@ -1,29 +1,27 @@
+import React, { useState, useEffect } from 'react';
+import Post from './Post';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch('https://65e60da8d7f0758a76e8083a.mockapi.io/api/posts')
+      .then((response) => response.json())
+      .then((data) => setPosts(data))
+      .catch((error) => console.error('Error fetching posts:', error));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      <h1>Instagram-like Social App</h1>
+      <div className="posts-container">
+        {posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
